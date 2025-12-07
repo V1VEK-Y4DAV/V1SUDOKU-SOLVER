@@ -71,21 +71,20 @@
     }
 
     #board {
-      display: grid;
-      grid-template-columns: repeat(9, 50px);
-      grid-template-rows: repeat(9, 50px);
+      display: inline-block;
       margin: 16px auto;
-      border: 3px solid #111;
-      background: #f9fafb;
-      border-radius: 8px;
-      overflow: hidden;
+      border: 2px solid #000;
+      background: #fff;
     }
 
     .cell {
-      border: 1px solid #ddd;
+      width: 40px;
+      height: 40px;
+      border: 1px solid #999;
       text-align: center;
-      font-size: 20px;
+      font-size: 18px;
       font-weight: bold;
+      vertical-align: middle;
     }
 
     .cell:focus {
@@ -93,10 +92,10 @@
       outline: none;
     }
 
-    .bold-border-top { border-top: 2px solid #111; }
-    .bold-border-left { border-left: 2px solid #111; }
-    .bold-border-right { border-right: 2px solid #111; }
-    .bold-border-bottom { border-bottom: 2px solid #111; }
+    .bold-border-top { border-top: 2px solid #000; }
+    .bold-border-left { border-left: 2px solid #000; }
+    .bold-border-right { border-right: 2px solid #000; }
+    .bold-border-bottom { border-bottom: 2px solid #000; }
 
     .invalid {
       background: #fee2e2 !important;
@@ -155,26 +154,39 @@
     let timer = null, seconds = 0;
 
     // Build Board
-    for (let i = 0; i < 81; i++) {
-      const input = document.createElement("input");
-      input.type = "text";
-      input.maxLength = 1;
-      input.className = "cell";
-
-      const row = Math.floor(i / 9), col = i % 9;
-      if (row % 3 === 0) input.classList.add("bold-border-top");
-      if (col % 3 === 0) input.classList.add("bold-border-left");
-      if (col === 8) input.classList.add("bold-border-right");
-      if (row === 8) input.classList.add("bold-border-bottom");
-
-      input.addEventListener("input", () => {
-        input.value = input.value.replace(/[^1-9]/, "");
-        validateBoard();
-      });
-
-      boardEl.appendChild(input);
-      inputs.push(input);
+    const table = document.createElement("table");
+    table.style.borderCollapse = "collapse";
+    
+    for (let row = 0; row < 9; row++) {
+      const tr = document.createElement("tr");
+      
+      for (let col = 0; col < 9; col++) {
+        const td = document.createElement("td");
+        const input = document.createElement("input");
+        
+        input.type = "text";
+        input.maxLength = 1;
+        input.className = "cell";
+        
+        if (row % 3 === 0) input.classList.add("bold-border-top");
+        if (col % 3 === 0) input.classList.add("bold-border-left");
+        if (col === 8) input.classList.add("bold-border-right");
+        if (row === 8) input.classList.add("bold-border-bottom");
+        
+        input.addEventListener("input", () => {
+          input.value = input.value.replace(/[^1-9]/, "");
+          validateBoard();
+        });
+        
+        td.appendChild(input);
+        tr.appendChild(td);
+        inputs.push(input);
+      }
+      
+      table.appendChild(tr);
     }
+    
+    boardEl.appendChild(table);
 
     function clearBoard() {
       inputs.forEach(cell => {
