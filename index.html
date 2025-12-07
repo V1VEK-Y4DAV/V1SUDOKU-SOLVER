@@ -20,11 +20,45 @@
     }
 
     main {
-      width: 560px; padding: 20px;
+      display: flex;
+      width: 900px; padding: 20px;
       border-radius: 16px;
       background: #fff;
       box-shadow: 0 8px 28px rgba(0,0,0,.15);
+    }
+
+    .sidebar {
+      width: 300px;
+      padding: 20px;
+      border-right: 1px solid #eee;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar > h1 {
       text-align: center;
+      margin-top: 0;
+    }
+
+    .control-group {
+      margin-bottom: 20px;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 8px;
+    }
+
+    .control-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+
+    .game-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-left: 20px;
     }
 
     h1 {
@@ -42,12 +76,19 @@
     }
 
     select, button {
-      padding: 8px 14px;
+      width: 100%;
+      margin-bottom: 8px;
+      padding: 10px 14px;
       font-size: 15px;
       border-radius: 8px;
       border: 1px solid #ccc;
       cursor: pointer;
       transition: all .2s ease;
+    }
+
+    select:last-child,
+    button:last-child {
+      margin-bottom: 0;
     }
 
     select:hover { border-color: var(--primary); }
@@ -72,17 +113,17 @@
 
     #board {
       display: inline-block;
-      margin: 16px auto;
+      margin: 16px 0;
       border: 2px solid #000;
       background: #fff;
     }
 
     .cell {
-      width: 40px;
-      height: 40px;
+      width: 50px;
+      height: 50px;
       border: 1px solid #999;
       text-align: center;
-      font-size: 18px;
+      font-size: 22px;
       font-weight: bold;
       vertical-align: middle;
     }
@@ -111,32 +152,42 @@
 </head>
 <body>
   <main>
-    <h1>Sudoku Solver</h1>
-
-    <div class="controls">
-      <label for="modeSelect">Mode:</label>
-      <select id="modeSelect">
-        <option value="solver">Solver</option>
-        <option value="player">Player</option>
-      </select>
-
-      <label for="levelSelect">Level:</label>
-      <select id="levelSelect">
-        <option value="easy">Easy</option>
-        <option value="medium">Medium</option>
-        <option value="hard">Hard</option>
-        <option value="expert">Expert</option>
-        <option value="god">God</option>
-      </select>
-
-      <button id="startBtn">Start</button>
-      <button id="solveBtn">Solve</button>
-      <button id="clearBtn">Clear</button>
+    <div class="sidebar">
+      <h1>Sudoku Solver</h1>
+      
+      <div class="control-group">
+        <label for="modeSelect">Game Mode</label>
+        <select id="modeSelect">
+          <option value="solver">Solver</option>
+          <option value="player">Player</option>
+        </select>
+      </div>
+      
+      <div class="control-group">
+        <label for="levelSelect">Difficulty Level</label>
+        <select id="levelSelect">
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+          <option value="expert">Expert</option>
+          <option value="god">God</option>
+        </select>
+      </div>
+      
+      <div class="control-group">
+        <button id="startBtn">Start Game</button>
+        <button id="solveBtn">Solve Puzzle</button>
+        <button id="clearBtn">Clear Board</button>
+      </div>
+      
+      <div class="control-group">
+        <div id="timer">Time: 0s</div>
+        <p id="status"></p>
+      </div>
     </div>
-
-    <div id="timer">Time: 0s</div>
-    <div id="board"></div>
-    <p id="status"></p>
+    <div class="game-area">
+      <div id="board"></div>
+    </div>
   </main>
 
   <script src="puzzles.js"></script>
