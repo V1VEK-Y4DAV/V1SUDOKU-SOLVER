@@ -35,8 +35,19 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.7);
       z-index: -1;
+    }
+    
+    #loadingIndicator {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 24px;
+      z-index: -1;
+      display: none;
     }
 
     main {
@@ -171,10 +182,12 @@
   </style>
 </head>
 <body>
-  <video id="videoBackground" autoplay muted loop>
-    <source src="https://cdn.dribbble.com/userupload/13050401/file/original-ed9e329f7167698673aa3fe548026a8c.mp4" type="video/mp4">
+  <video id="videoBackground" autoplay muted loop playsinline preload="metadata">
+    <source src="animation.mp4" type="video/mp4">
+    Your browser does not support the video tag.
   </video>
   <div id="videoOverlay"></div>
+  <div id="loadingIndicator">Loading video...</div>
   <main>
     <div class="sidebar">
       <h1>Sudoku Solver</h1>
@@ -455,6 +468,26 @@
     startBtn.addEventListener("click", startGame);
     solveBtn.addEventListener("click", solve);
     clearBtn.addEventListener("click", clearBoard);
+    
+    // Video loading optimization
+    const videoBackground = document.getElementById('videoBackground');
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    
+    // Show loading indicator
+    loadingIndicator.style.display = 'block';
+    
+    videoBackground.addEventListener('loadeddata', function() {
+      // Hide loading indicator when video is loaded
+      loadingIndicator.style.display = 'none';
+    });
+    
+    videoBackground.addEventListener('error', function() {
+      // Hide loading indicator and show fallback if video fails to load
+      loadingIndicator.style.display = 'none';
+    });
+    
+    // Try to load video immediately
+    videoBackground.load();
   </script>
 </body>
 </html>
