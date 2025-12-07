@@ -333,12 +333,68 @@
       }
       const grid = inputs.map(cell => cell.value === "" ? 0 : parseInt(cell.value));
       if (sudokuSolver(grid)) {
-        for (let i = 0; i < 81; i++) inputs[i].value = grid[i];
+        animateSolution(grid);
         statusEl.textContent = "Solved 🎉";
         stopTimer();
       } else {
         statusEl.textContent = "No solution found ❌";
       }
+    }
+
+    function animateSolution(solution) {
+      // Reset board
+      for (let i = 0; i < 81; i++) {
+        if (inputs[i].value === "") {
+          inputs[i].value = "";
+        }
+      }
+      
+      // Animate filling in the solution
+      let index = 0;
+      const interval = setInterval(() => {
+        if (index < 81) {
+          // Only fill empty cells
+          if (inputs[index].value === "") {
+            inputs[index].value = solution[index];
+            inputs[index].style.backgroundColor = "#e0f2fe";
+            setTimeout(() => {
+              inputs[index].style.backgroundColor = "";
+            }, 200);
+          }
+          index++;
+        } else {
+          clearInterval(interval);
+          // Celebrate win
+          celebrateWin();
+        }
+      }, 50);
+    }
+
+    function celebrateWin() {
+      // Add celebration effect
+      statusEl.textContent = "🎉 Congratulations! Puzzle Solved! 🎉";
+      statusEl.style.color = "#14b8a6";
+      statusEl.style.fontWeight = "bold";
+      
+      // Animate the board
+      boardEl.style.transform = "scale(1)";
+      boardEl.style.transition = "transform 0.3s";
+      
+      // Pulse animation
+      let scale = 1;
+      let direction = 1;
+      const pulse = setInterval(() => {
+        scale += direction * 0.02;
+        if (scale > 1.1) direction = -1;
+        if (scale < 1) direction = 1;
+        boardEl.style.transform = `scale(${scale})`;
+        
+        // Stop after 3 seconds
+        setTimeout(() => {
+          clearInterval(pulse);
+          boardEl.style.transform = "scale(1)";
+        }, 3000);
+      }, 50);
     }
 
     function sudokuSolver(grid) {
