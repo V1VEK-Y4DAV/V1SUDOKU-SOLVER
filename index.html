@@ -8,7 +8,6 @@
       --primary: #4f46e5;
       --accent: #14b8a6;
       --danger: #ef4444;
-      --bg: linear-gradient(135deg, #eef2ff, #fdf2f8);
     }
 
     * { box-sizing: border-box; font-family: "Segoe UI", sans-serif; }
@@ -16,7 +15,28 @@
     body {
       display: flex; align-items: center; justify-content: center;
       min-height: 100vh; margin: 0;
-      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    #videoBackground {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+    }
+    
+    #videoOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: -1;
     }
 
     main {
@@ -151,6 +171,10 @@
   </style>
 </head>
 <body>
+  <video id="videoBackground" autoplay muted loop>
+    <source src="https://cdn.dribbble.com/userupload/13050401/file/original-ed9e329f7167698673aa3fe548026a8c.mp4" type="video/mp4">
+  </video>
+  <div id="videoOverlay"></div>
   <main>
     <div class="sidebar">
       <h1>Sudoku Solver</h1>
@@ -434,4 +458,3 @@
   </script>
 </body>
 </html>
-
