@@ -21,3 +21,7 @@ The Sudoku Solver is a web-based application built with **HTML, CSS, and JavaScr
 - **Design:** Responsive CSS Grid Layout
 
 ---
+<!--
+# Review
+open for reviews
+-->
